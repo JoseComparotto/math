@@ -2,7 +2,7 @@
 import re
 
 NUMBER = r'(?:\d+(?:\.\d+)?)'
-VALID_EXPRESSION = rf'^\s*{NUMBER}\s*(?:[*/+-]{NUMBER}\s*)*$'
+VALID_EXPRESSION = rf'^\s*{NUMBER}\s*(?:[*/+-]\s*{NUMBER}\s*)*$'
 
 def number_solve(expression):
 
@@ -54,7 +54,7 @@ def math_eval(expression: str):
     result = additive_solve(expression)
     result = int(result) if int(result) == result else result
 
-    return result
+    return round(result,15)
 
 if __name__ == '__main__':
     while True:
