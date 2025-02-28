@@ -2,7 +2,7 @@
 import re
 
 NUMBER = r'(?:\d+(?:\.\d+)?)'
-VALID_EXPRESSION = rf'^\s*{NUMBER}\s*(?:[*/+-]\s*{NUMBER}\s*)*$'
+VALID_EXPRESSION = rf'^\s*{NUMBER}\s*(?:[\^*/+-]\s*{NUMBER}\s*)*$'
 
 def number_solve(expression):
 
@@ -12,16 +12,29 @@ def number_solve(expression):
 
     return float(m[1])
 
+def exponential_solve(expression):
+
+    match = re.match(r'^(.+?)(\^)(.+)$', expression)
+    if not match:
+        return number_solve(expression)
+
+    left, _, right = match.groups()
+
+    left = number_solve(left)
+    right = exponential_solve(right)
+   
+    return left ** right
+
 def multiplicative_solve(expression):
 
     match = re.match(r'^(.+)([*/])(.+?)$', expression)
     if not match:
-        return number_solve(expression)
+        return exponential_solve(expression)
 
     left, ope, right = match.groups()
 
     left = multiplicative_solve(left)
-    right = number_solve(right)
+    right = exponential_solve(right)
    
     if ope == '*':
         return left * right
