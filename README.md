@@ -28,8 +28,8 @@ Interpretador de expressões matemáticas para aplicar as teorias de Linguagens 
 
 <number> ::= <integer-number> | <floating-number>;
 
-<integer-number> ::= *<digit>;
-<floating-number> ::= *<digit>, <decimal-separator>, *<digit>;
+<integer-number> ::= { <digit> };
+<floating-number> ::= { <digit> }, <decimal-separator>, { <digit> };
 
 <digit> ::= '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 <decimal-separator> ::= '.';
