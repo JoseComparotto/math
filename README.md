@@ -21,39 +21,40 @@ Este projeto implementa um **parser recursivo descendente** para avaliar express
 A seguinte gramática em **EBNF (Extended Backus-Naur Form)** descreve a estrutura das expressões suportadas:
 
 ```ebnf
+(* Expressão matemática completa *)
 input = additive-expression;
 
+(* Expressões de adição e subtração *)
 additive-expression =
-    additive-expression,
-    additive-operator,
-    multiplicative-expression
-    | multiplicative-expression;
-
-multiplicative-expression =
     multiplicative-expression,
-    multiplicative-operator,
-    exponential-expression
-    | exponential-expression;
+    { additive-operator, multiplicative-expression };
 
-exponential-expression =
+(* Expressões de multiplicação e divisão *)
+multiplicative-expression =
     exponential-expression,
-    exponential-operator,
-    number
-    | number;
+    { multiplicative-operator, exponential-expression };
 
+(* Expressões de exponenciação *)
+exponential-expression =
+    number,
+    { exponential-operator, number };
+
+(* Definição de números inteiros e de ponto flutuante *)
 number = integer-number | floating-number;
 
-integer-number = digits;
-floating-number = digits, decimal-separator, digits;
+integer-number = digit, { digit };
+floating-number = integer-number, decimal-separator, digit, { digit };
 
-digits = digit, { digit };
+(* Definição de dígitos *)
 digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 decimal-separator = '.';
+
+(* Definição de operadores *)
 additive-operator = '+' | '-';
 multiplicative-operator = '*' | '/';
 exponential-operator = '^';
 
-(* Notação EBNF - ISO/IEC 14977:1996 <https://www.iso.org/standard/26153.html> *)
+(* Notação EBNF conforme ISO/IEC 14977:1996 *)
 ```
 
 ## 🚀 Como Usar
